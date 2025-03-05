@@ -41,7 +41,7 @@ const PackagesPage = () => {
 
     fetchPackages();
 
-    if (username) {
+    if (username && username !== "guest") {
       axios
         .get(`http://localhost:8000/api/get_wishlist/?username=${username}`)
         .then((response) => {
@@ -56,7 +56,7 @@ const PackagesPage = () => {
           setError("Error fetching wishlist: " + (error.response ? error.response.data.error : error.message));
         });
     }
-  }, [location.search, username]);
+  }, [location.search, username, packageName]);
 
   const handleAddToWishlist = async (pkgId) => {
     try {
@@ -68,11 +68,7 @@ const PackagesPage = () => {
   };
 
   const handleBookNow = (pkg) => {
-    if (username === "guest") {
-      alert("Register to book tour!");
-    } else {
-      navigate(`/booking/${username}/${pkg._id}`, { state: { package: pkg, headerImage } });
-    }
+    navigate(`/booking/${username}/${pkg._id}`, { state: { package: pkg, headerImage } });
   };
 
   const handleViewPackage = (pkgId) => {
@@ -114,7 +110,7 @@ const PackagesPage = () => {
                   <h2 className={styles.packageTitle}>{pkg.title}</h2>
                 </div>
                 <p className={styles.packageDescription}>
-                  {pkg.tour_highlights} {" "}
+                  {pkg.tour_highlights}{" "}
                   <span
                     className={styles.viewPackageLink}
                     onClick={() => handleViewPackage(pkg._id)}
@@ -125,22 +121,33 @@ const PackagesPage = () => {
               </div>
 
               <div className={styles.packageActions}>
-                <button
-                  className={`${styles.addToWishlistBtn} ${styles.savedBtn}`}
-                  onClick={() => handleAddToWishlist(pkg._id)}
-                >
-                  {wishlist.some((item) => item._id === pkg._id) ? (
-                    <span>Saved</span>
-                  ) : (
-                    <>Save for later</>
-                  )}
-                </button>
-                <button
-                  className={styles.addToCartBtn}
-                  onClick={() => handleBookNow(pkg)}
-                >
-                  Book Now
-                </button>
+                {username && username !== "guest" ? (
+                  <>
+                    <button
+                      className={`${styles.addToWishlistBtn} ${styles.savedBtn}`}
+                      onClick={() => handleAddToWishlist(pkg._id)}
+                    >
+                      {wishlist.some((item) => item._id === pkg._id) ? (
+                        <span>Saved</span>
+                      ) : (
+                        <>Save for later</>
+                      )}
+                    </button>
+                    <button
+                      className={styles.addToCartBtn}
+                      onClick={() => handleBookNow(pkg)}
+                    >
+                      Book Now
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    className={styles.loginBtn}
+                    onClick={() => navigate("/login")}
+                  >
+                    Login to book tour
+                  </button>
+                )}
               </div>
             </div>
           ))

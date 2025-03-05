@@ -14,43 +14,42 @@ import Booking from "./components/Booking";
 import axios from "axios";
 import MyBookings from "./components/MyBookings";
 import ReviewForm from "./components/ReviewForm";
+import ProtectedRoute from "./components/ProtectedRoute";
 // import AdminHome from "./Admin/AdminHome";
 
 axios.defaults.xsrfCookieName = "csrftoken";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
 
 function App() {
+  // Example authentication check. Replace with your actual authentication logic.
+  const isAuthenticated = Boolean(localStorage.getItem("token"));
+
   return (
     <HelmetProvider>
       <Router>
         <Routes>
-          {/* Home routes */}
+          {/* Public Routes */}
           <Route path="/" element={<Home />} />
           <Route path="/home/hafsah" element={<Home />} />
           <Route path="/home/:username" element={<Home />} />
-
-          {/* Authentication routes */}
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-
-          {/* Static pages */}
           <Route path="/aboutus/:username" element={<AboutUs />} />
           <Route path="/contactus/:username" element={<ContactUs />} />
 
-          {/* User profile */}
-          <Route path="/profile/:username" element={<Profile />} />
+          {/* Protected Routes */}
+          <Route element={<ProtectedRoute isAuthenticated={isAuthenticated} />}>
+            <Route path="/profile/:username" element={<Profile />} />
+            <Route path="/packages" element={<PackagesPage />} />
+            <Route path="/packages/:username" element={<PackagesPage />} />
+            <Route path="/packagedetails/:username/:pkgId" element={<PackageDetailPage />} />
+            <Route path="/wishlist/:username" element={<Wishlist />} />
+            <Route path="/booking/:username/:packageId" element={<Booking />} />
+            <Route path="/mybookings/:username" element={<MyBookings />} />
+            <Route path="/submit_review/:username/:pkgId" element={<ReviewForm />} />
+          </Route>
 
-          {/* Packages page */}
-          <Route path="/packages" element={<PackagesPage />} />
-          <Route path="/packages/:username" element={<PackagesPage />} />
-          <Route path="/packagedetails/:username/:pkgId" element={<PackageDetailPage />} />
-
-          <Route path="/wishlist/:username" element={<Wishlist />} />
-          <Route path="/booking/:username/:packageId" element={<Booking />} />
-          <Route path="/mybookings/:username" element={<MyBookings />} />
-          <Route path="/submit_review/:username/:pkgId" element={<ReviewForm />} />
-
-          {/* Admin */}
+          {/* Admin (if needed) */}
           {/* <Route path="/admin" element={<AdminHome />} /> */}
         </Routes>
       </Router>
