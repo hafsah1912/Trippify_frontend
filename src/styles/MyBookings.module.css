@@ -1,0 +1,115 @@
+.myBookingsWrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.myBookingsWrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-image: url('../../public/static/image/bookin.jpeg'); /* Replace with the path to your image */
+  background-size: cover; /* Make sure the image covers the entire area */
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Prevent the image from repeating */
+  color: #333; /* Optional: Set a default text color */
+}
+
+/* ... rest of your existing CSS ... */
+
+.navbarDiv {
+  margin-bottom: 20px;
+}
+
+.heading {
+  text-align: center;
+  margin: 20px 0;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-top: 100px;
+}
+
+.bookingsContainer {
+  width: 90%;
+  margin: 0 auto;
+  background-color: #f9f9f9;
+  padding: 20px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.errorMessage {
+  color: red;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.bookingsTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.bookingsTable th,
+.bookingsTable td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+.bookingsTable th {
+  background-color: #f0f0f0;
+  font-weight: bold;
+}
+
+.bookingsTable td {
+  background-color: #fff;
+}
+
+.bookingActions {
+  text-align: center;
+}
+
+.reviewButton {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.viewPackageLink {
+  color: #28a745;
+  cursor: pointer;
+}
+
+.viewPackageLink:hover {
+  text-decoration: underline;
+}
+
+.familyDetailsList {
+  padding-left: 20px;
+  list-style-type: disc;
+}
+
+.footer {
+  margin-top: auto;
+}
+
+/* Hover effect for table rows */
+.bookingsTable tbody tr:hover {
+  background-color: #f0f8ff; /* Light blue background on hover */
+  cursor: pointer; /* Change cursor to pointer */
+}
+
+@media (max-width: 768px) {
+  .bookingsContainer {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .bookingsTable th,
+  .bookingsTable td {
+    padding: 5px;
+  }
+}

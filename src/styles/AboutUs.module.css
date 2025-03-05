@@ -1,0 +1,146 @@
+.aboutUs {
+  background-color: #f0f0f0; /* Soft light gray for the background */
+  color: #333;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  padding: 0;
+  margin: 0;
+}
+
+.navbarDiv {
+  position: fixed;
+  width: 100%;
+  z-index: 1;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.aboutUsHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 60vh;
+  color: white;
+  text-align: center;
+  background: linear-gradient(135deg, #009688, #00bcd4); /* Smooth gradient */
+  padding: 60px 20px; /* More padding for a spacious look */
+}
+
+.aboutUsHeader h1 {
+  font-size: 48px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4); /* Enhanced text shadow */
+}
+
+.companyInfo,
+.ourValues,
+.sevenWonders {
+  padding: 40px 20px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); /* Deeper shadow for depth */
+  margin: 40px 20px;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  transition: transform 0.3s, box-shadow 0.3s; /* Animation for hover effect */
+}
+
+.companyInfo:hover,
+.ourValues:hover,
+.sevenWonders:hover {
+  transform: translateY(-5px); /* Lift effect on hover */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* Deeper shadow on hover */
+}
+
+.companyInfo h2,
+.ourValues h2,
+.sevenWonders h2 {
+  font-size: 36px;
+  font-weight: bold;
+  color: #00796b; /* Darker teal color */
+  text-align: center;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #00bcd4; /* Underline effect */
+  padding-bottom: 10px; /* Padding for separation */
+}
+
+.companyInfo p,
+.ourValues ul li,
+.sevenWonders p {
+  font-size: 18px;
+  line-height: 1.8;
+  text-align: justify;
+}
+
+.ourValues ul,
+.sevenWonders ul {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 20px;
+}
+
+.ourValues ul li,
+.sevenWonders ul li {
+  font-size: 18px;
+  margin-bottom: 15px;
+  padding-left: 40px;
+  position: relative;
+  transition: color 0.3s; /* Smooth color transition */
+}
+
+.ourValues ul li:hover,
+.sevenWonders ul li:hover {
+  color: #00796b; /* Change color on hover */
+}
+
+.ourValues ul li::before,
+.sevenWonders ul li::before {
+  content: "✔"; /* Check mark for values list */
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 24px;
+  color: #4caf50; /* Check mark color */
+}
+
+.footer {
+  margin-top: auto;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+  .aboutUsHeader h1 {
+    font-size: 36px;
+  }
+
+  .companyInfo h2,
+  .ourValues h2,
+  .sevenWonders h2 {
+    font-size: 28px;
+  }
+
+  .companyInfo p,
+  .ourValues ul li,
+  .sevenWonders p {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 576px) {
+  .aboutUsHeader h1 {
+    font-size: 28px;
+  }
+
+  .companyInfo,
+  .ourValues,
+  .sevenWonders {
+    padding: 30px 15px; /* Reduced padding for smaller screens */
+  }
+
+  .companyInfo h2,
+  .ourValues h2,
+  .sevenWonders h2 {
+    font-size: 24px;
+  }
+}

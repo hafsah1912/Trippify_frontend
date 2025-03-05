@@ -1,0 +1,129 @@
+/* Navbar.module.css */
+
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Playfair+Display:wght@400;700&display=swap');
+
+/* Base Navbar styling */
+.navbar {
+  background-color: #1a1a1d; /* Dark background */
+  padding: 10px 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'Montserrat', sans-serif;
+  transition: background-color 0.3s ease;
+}
+
+.navbar:hover {
+  background-color: #151517;
+}
+
+/* Navbar brand */
+.navbarBrand {
+  color: #66e1c2; /* Khaki font color for the brand */
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 26px;
+  letter-spacing: 2px;
+  display: flex;
+  align-items: center;
+}
+
+.navbarBrand:hover {
+  color: #ffd700; /* Gold color on hover */
+  text-decoration: none;
+}
+
+/* Toggler button */
+.togglerBtn {
+  border-color: #66e1c2; /* Matching khaki border */
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba(240, 230, 140, 0.8)' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
+/* Toggler Dropdown */
+.togglerDiv {
+  background-color: #1a1a1d;
+}
+
+/* Nav Links */
+.navList {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navItem {
+  margin-left: 20px;
+  position: relative; /* For hover effect positioning */
+}
+
+.navLink {
+  color: #d3d3d3; /* Light grey text for links */
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+.navLink:hover {
+  color: #66e1c2; /* Khaki on hover */
+  background-color: #151517;
+  padding: 5px 15px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow effect */
+}
+
+/* Dropdown */
+.dropdown-toggle::after {
+  color: #f0e68c;
+}
+
+/* Updated Dropdown Menu Background Color */
+.dropdown-menu {
+  background-color: #2c2c2e; /* New lighter grey background for dropdown */
+  border: 1px solid #333;
+  border-radius: 5px;
+}
+
+.dropdown-item {
+  color: #d3d3d3; /* Light grey text */
+  font-family: 'Montserrat', sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dropdown-item:hover {
+  color: #f0e68c;
+  background-color: #444; /* Slightly darker hover color */
+}
+
+/* Profile & Other Buttons */
+.navbar .btn {
+  background-color: #f0e68c; /* Khaki button color */
+  color: #1a1a1d; /* Dark text color */
+  font-weight: 600;
+  font-family: 'Montserrat', sans-serif;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.navbar .btn:hover {
+  background-color: #ffd700; /* Gold on hover */
+  transform: translateY(-2px);
+}
+
+/* Mobile view */
+@media (max-width: 768px) {
+  .navbarBrand {
+    font-size: 22px;
+  }
+  .navItem {
+    margin-left: 0;
+  }
+  .navbar-collapse {
+    text-align: center;
+  }
+  .dropdown-menu {
+    width: 100%;
+  }
+}

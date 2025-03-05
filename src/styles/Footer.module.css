@@ -1,0 +1,65 @@
+.footer {
+  text-align: center;
+  background-color: #121212; /* Darker background for better contrast */
+  color: white;
+  padding: 30px 0; /* Increased padding for more space */
+  position: relative; /* Allows for better layout control */
+}
+
+.socialLinks {
+  margin-bottom: 1.5rem; /* Increased margin for spacing */
+}
+
+.socialLink {
+  color: white;
+  margin: 0 1rem; /* More space between icons */
+  font-size: 1.8rem; /* Slightly larger icons for visibility */
+  transition: transform 0.2s, color 0.2s; /* Smooth transition for hover effects */
+}
+
+.socialLink:hover {
+  transform: scale(1.2); /* Scale up on hover */
+}
+
+/* Specific hover colors for social media icons */
+.facebook:hover {
+  color: #3b5998; /* Facebook blue */
+}
+
+.twitter:hover {
+  color: #1da1f2; /* Twitter blue */
+}
+
+.google:hover {
+  color: #db4437; /* Google red */
+}
+
+.instagram:hover {
+  background: linear-gradient(to right, #f58529, #dd2a7b, #8134af, #515bd4); /* Instagram gradient */
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.linkedin:hover {
+  color: #0a66c2; /* LinkedIn blue */
+}
+
+.github:hover {
+  color: #333; /* GitHub dark */
+}
+
+.copyright {
+  font-weight: 400;
+  margin-top: 15px; /* Space above copyright text */
+  font-size: 0.9rem; /* Slightly smaller font size for copyright */
+}
+
+@media (max-width: 768px) {
+  .footer {
+    padding: 20px 0; /* Adjust padding for smaller screens */
+  }
+
+  .socialLink {
+    font-size: 1.5rem; /* Slightly smaller icons on mobile */
+  }
+}

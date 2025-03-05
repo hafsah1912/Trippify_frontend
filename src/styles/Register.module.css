@@ -1,0 +1,95 @@
+.registerPage {
+  position: relative; /* Set position to relative */
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden; /* Ensure content doesn't overflow */
+}
+
+.registerPage::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('../../public/static/image/login.jpg');
+  background-size: cover;
+  background-position: center;
+  filter: blur(10px); /* Adjust blur level as needed */
+  z-index: 1; /* Position behind content */
+}
+
+.formContainer {
+  background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent */
+  border-radius: 15px;
+  padding: 40px;
+  width: 400px;
+  text-align: center;
+  position: relative; /* Set position to relative to place above pseudo-element */
+  z-index: 2; /* Ensure it appears above the blurred background */
+}
+
+.logoContainer {
+  margin-bottom: 20px;
+}
+
+.fontStyle {
+  font-size: 2rem;
+  color: #2c3e50;
+  font-weight: bold;
+}
+
+.registerContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.registerSlogan {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  color: #34495e;
+}
+
+.registerHeading {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: #2980b9;
+}
+
+.inputField {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: 1px solid #bdc3c7;
+  background-color: #f2f2f2;
+}
+
+.registerButton {
+  width: 100%;
+  padding: 12px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: background-color 0.3s ease;
+}
+
+.registerButton:hover {
+  background-color: #2980b9;
+}
+
+.registerLink {
+  display: block;
+  margin-top: 15px;
+  color: #3498db;
+  text-decoration: none;
+}
+
+.registerLink:hover {
+  text-decoration: underline;
+}

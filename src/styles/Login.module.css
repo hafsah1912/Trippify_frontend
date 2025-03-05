@@ -1,0 +1,118 @@
+.loginPage {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.loginPage::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('../../public/static/image/login.jpg');
+  background-size: cover;
+  background-position: center;
+  filter: blur(10px); /* Adjust blur level as needed */
+  z-index: 1; /* Position behind content */
+}
+
+.formContainer {
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+  padding: 30px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.logoContainer {
+  margin-bottom: 20px;
+}
+
+.fontStyle {
+  font-family: "Protest Riot", sans-serif;
+  font-size: 24px;
+  color: rgb(100, 149, 237); /* Cornflower Blue */
+}
+
+.loginSlogan {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: rgb(100, 149, 237); /* Cornflower Blue */
+}
+
+.loginHeading {
+  font-size: 20px;
+  margin-bottom: 20px;
+  color: rgb(100, 149, 237); /* Cornflower Blue */
+}
+
+.inputField {
+  width: 100%;
+  padding: 12px 15px;
+  margin-bottom: 15px;
+  border: 1px solid rgb(119, 39, 39);
+  border-radius: 5px;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+}
+
+.inputField:focus {
+  border-color: rgb(0, 120, 255);
+  outline: none;
+}
+
+.loginButton {
+  width: 100%;
+  padding: 12px;
+  background-color: rgb(0, 102, 204);
+  color: white; /* Keep this white for contrast */
+  border: none;
+  border-radius: 5px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.loginButton:hover {
+  background-color: rgb(0, 86, 173);
+}
+
+.registerLink {
+  display: block;
+  margin-top: 15px;
+  color: rgb(100, 149, 237); /* Cornflower Blue */
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.registerLink:hover {
+  text-decoration: underline;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 576px) {
+  .formContainer {
+    padding: 20px;
+  }
+
+  .loginHeading {
+    font-size: 18px;
+  }
+
+  .inputField {
+    font-size: 14px;
+  }
+
+  .loginButton {
+    font-size: 16px;
+  }
+}

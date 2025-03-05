@@ -1,0 +1,190 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Playfair+Display:wght@400;700&display=swap');
+
+/* General Styling */
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
+  background-color: #e0f7fa; /* Light sky-blue background for the entire page */
+  color: #333; /* Standard text color for readability */
+}
+
+/* Navbar Container */
+.navbarDiv {
+  width: 100%;
+  position: relative;
+  background-color: #e0f7fa; /* Light sky blue for navbar area */
+  border-bottom: 2px solid #781eff; /* Add an accent border at the bottom */
+}
+
+/* Super Main Container */
+.superMainDiv {
+  background-color: #e0f7fa; /* Light sky blue background for the entire section */
+  padding: 20px 0;
+  text-align: center;
+}
+
+/* Main Section with Typing Effect */
+.mainDiv {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 700px;
+  background-image: url("../../public/static/image/HomePage/home.jpeg");
+  background-size: cover;
+  background-position: center;
+  text-align: center;
+  background-color: #e0f7fa; /* Fallback sky blue if image fails to load */
+}
+
+/* Typing Text Container */
+.typingContainer {
+  position: absolute; /* Positioning absolute */
+  top: 60px; /* Position at the top of the image */
+  left: 50%; /* Center horizontally */
+  transform: translateX(-50%); /* Adjust for perfect centering */
+  color: black;
+}
+
+.h1Heading {
+  font-size: 42px; /* Increase size for more emphasis */
+  font-weight: 700;
+  color: #781eff; /* Eye-catching color for contrast */
+  letter-spacing: 2px;
+  text-transform: uppercase; /* Make heading stand out */
+}
+
+.typedText {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px; /* Slightly larger for better readability */
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: #781eff;
+  transition: color 0.3s ease;
+}
+
+/* Fixed Text (Non-Typing) */
+.fixedText {
+  margin-top: 40px;
+  padding: 100px;
+  padding-top: 670px;
+  position: relative;
+}
+
+.fixedText h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 48px;
+  color: #bc1eff; /* Strong color to grab attention */
+  margin-bottom: 10px;
+}
+
+.fixedText h3 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 26px;
+  color: #961eff; /* Subtle purple for subheadings */
+  margin-bottom: 20px; /* Add space between headings */
+}
+
+.fixedText h3 span {
+  color: #3c1eff; /* Bright blue for accenting */
+  font-weight: 700;
+}
+
+/* Tour Packages Section */
+.tourPackagesSectionMain {
+  background-color: #e0f7fa; /* Light sky blue for the tour packages section */
+  padding: 40px 0;
+}
+
+.tourPackagesSection {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.packagesHeadingContainer {
+  margin-bottom: 30px;
+}
+
+.sectionHeading {
+  font-size: 38px; /* Larger heading for section */
+  font-weight: 700;
+  color: #333;
+  font-family: 'Montserrat', sans-serif;
+  text-transform: uppercase; /* Uniform look for section headings */
+}
+
+.packagesContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  justify-items: center;
+  padding: 0 20px;
+}
+
+/* Individual Package Card */
+.packageCard {
+  background-color: #ffffff; /* Keep the card clean with white background */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  overflow: hidden;
+  border: 2px solid #e0e0e0; /* Light grey border */
+}
+
+.packageCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  border-color: #781eff; /* Change the border color on hover for emphasis */
+}
+
+/* Package Image */
+.packageImage {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom: 2px solid #e0e0e0; /* Consistent border at the bottom of the image */
+}
+
+/* Package Title */
+.packageTitle {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 24px; /* Slightly larger for impact */
+  font-weight: 600;
+  margin: 15px 0 5px;
+  color: #333;
+  border-bottom: 1px solid #e0e0e0; /* Thin border separating the title from the description */
+  padding-bottom: 10px;
+  text-align: center; /* Center-align the title */
+  text-transform: capitalize; /* Make the title more readable */
+}
+
+/* Package Description */
+.packageDescription {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+  color: #777;
+  padding: 0 15px 20px;
+  text-align: center; /* Center-align the description */
+}
+
+/* Footer Section */
+.footer {
+  background-color: #1a1a1d;
+  color: #d3d3d3;
+  padding: 30px 0; /* Add more padding for a spacious look */
+  text-align: center;
+  font-size: 16px;
+}
+
+.footer p {
+  font-size: 14px; /* Adjust the footer text size */
+  color: #aaa; /* Subtle color to match the footer style */
+  margin: 5px 0;
+}
