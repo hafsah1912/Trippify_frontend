@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams, useNavigate } from "react-router-dom"; // ✅ Updated useHistory -> useNavigate
+import { useParams } from "react-router-dom";
 import styles from "../styles/MyBookings.module.css";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import { Helmet } from "react-helmet-async";
 
 const MyBookings = () => {
   const { username } = useParams();
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const navigate = useNavigate(); // ✅ Replaced useHistory()
 
   useEffect(() => {
     const fetchBookings = async () => {
@@ -20,9 +18,10 @@ const MyBookings = () => {
           `http://localhost:8000/api/get_bookings/?username=${username}`,
           { withCredentials: true }
         );
-        setBookings(response.data.bookings);
-      } catch (error) {
-        setError("Failed to fetch bookings.");
+        setBookings(response.data.bookings || []);
+      } catch (err) {
+        console.error("Error fetching bookings:", err.response?.data || err.message);
+        setError("Failed to fetch bookings. Please try again later.");
       } finally {
         setLoading(false);
       }
@@ -31,26 +30,32 @@ const MyBookings = () => {
     fetchBookings();
   }, [username]);
 
-  const handleViewPackage = (pkgId) => {
-    navigate(`/packagedetails/${username}/${pkgId}`); // ✅ Updated navigation
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
   };
 
-  const handleReviewClick = (pkgId) => {
-    navigate(`/submit_review/${username}/${pkgId}`); // ✅ Updated navigation
-  };
-
-  if (loading) return <p>Loading...</p>;
+  if (loading)
+    return (
+      <div className={styles.loadingWrapper}>
+        <p className={styles.loadingText}>Fetching your bookings...</p>
+      </div>
+    );
 
   return (
     <div className={styles.myBookingsWrapper}>
-      <div className={styles.navbarDiv}>
-        <Navbar />
-      </div>
-      <h2 className={`${styles.heading} ${styles.brodiesFont}`}>
-        Your History
-      </h2>
+      <Navbar />
+      <h2 className={`${styles.heading} ${styles.brodiesFont}`}>Your Booking History</h2>
+
       <div className={styles.bookingsContainer}>
         {error && <p className={styles.errorMessage}>{error}</p>}
+
         {bookings.length > 0 ? (
           <table className={styles.bookingsTable}>
             <thead>
@@ -64,21 +69,23 @@ const MyBookings = () => {
             </thead>
             <tbody>
               {bookings.map((booking) => (
-                <tr key={booking._id}>
-                  <td>{booking.package_details.title}</td>
-                  <td>{booking.package_details.tour_highlights}</td>
+                <tr key={booking?._id}>
+                  <td>{booking?.package_details?.title || "N/A"}</td>
+                  <td>{booking?.package_details?.tour_highlights || "N/A"}</td>
                   <td>
-                    {booking.package_details.duration.days}D /{" "}
-                    {booking.package_details.duration.nights}N
+                    {booking?.package_details?.duration?.days || "0"}D /{" "}
+                    {booking?.package_details?.duration?.nights || "0"}N
                   </td>
-                  <td>{booking.date}</td>
+                  <td>{formatDate(booking?.date)}</td>
                   <td>
                     <ul className={styles.familyDetailsList}>
-                      {booking.family_members.map((member, index) => (
-                        <li key={index}>
-                          {member.name} (Age: {member.age})
-                        </li>
-                      ))}
+                      {booking?.family_members?.length > 0 ? (
+                        booking.family_members.map((member, index) => (
+                          <li key={index}>{member.name} (Age: {member.age})</li>
+                        ))
+                      ) : (
+                        <li>No family members listed</li>
+                      )}
                     </ul>
                   </td>
                 </tr>
@@ -86,7 +93,7 @@ const MyBookings = () => {
             </tbody>
           </table>
         ) : (
-          <p>No bookings found.</p>
+          <p className={styles.noBookingsText}>No bookings found.</p>
         )}
       </div>
       <Footer />

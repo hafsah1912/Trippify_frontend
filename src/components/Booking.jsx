@@ -12,33 +12,28 @@ const Booking = () => {
   const pkg = location.state?.package;
   const [familyCount, setFamilyCount] = useState(0);
   const [familyMembers, setFamilyMembers] = useState([]);
-  const [contactNumber, setContactNumber] = useState("");
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [totalPrice, setTotalPrice] = useState({ adult: 0, child: 0 });
 
   useEffect(() => {
-    if (!pkg) return;
+    if (!pkg || familyMembers.length === 0) return;
 
-    const calculateTotalPrice = () => {
-      let adultCount = 0;
-      let childCount = 0;
+    let adultCount = 0;
+    let childCount = 0;
 
-      familyMembers.forEach((member) => {
-        if (member.age >= 12) {
-          adultCount += 1; // Adults (12 and above)
-        } else if (member.age >= 5) {
-          childCount += 1; // Children (5-11)
-        }
-      });
+    familyMembers.forEach((member) => {
+      if (member.age >= 12) {
+        adultCount += 1; // Adults (12 and above)
+      } else if (member.age >= 5) {
+        childCount += 1; // Children (5-11)
+      }
+    });
 
-      setTotalPrice({
-        adult: adultCount * (pkg?.price?.adult || 0),
-        child: childCount * (pkg?.price?.child || 0),
-      });
-    };
-
-    calculateTotalPrice();
+    setTotalPrice({
+      adult: adultCount * (pkg?.price?.adult || 0),
+      child: childCount * (pkg?.price?.child || 0),
+    });
   }, [familyMembers, pkg]);
 
   const handleFamilyCountChange = (e) => {
@@ -57,7 +52,7 @@ const Booking = () => {
     try {
       const response = await axios.post(
         "http://localhost:8000/api/book_package/",
-        { username, packageId, familyMembers, contactNumber }
+        { username, packageId, familyMembers }
       );
 
       setSuccess(`Booking successful! Date: ${response.data.date}`);
