@@ -10,26 +10,29 @@ const PackagesPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [wishlist, setWishlist] = useState([]);
+
   const location = useLocation();
   const { username } = useParams();
-  const navigate = useNavigate(); // useNavigate replaces useHistory in v6
+  const navigate = useNavigate();
+
   const queryParams = new URLSearchParams(location.search);
   const packageName = queryParams.get("name");
+
   const headerImage =
     location.state?.headerImage ||
     "/static/image/Individual_Pages_Banners/uk-banner-img.jpeg";
-  const [wishlist, setWishlist] = useState([]);
+
+  // ✅ Fix username decoding
+  const decodedUsername = atob(username);
+  console.log("Decoded Username:", decodedUsername);
 
   useEffect(() => {
-    console.log("ERROR HERE");
     const fetchPackages = async () => {
       try {
         let endpoint = "http://localhost:8000/api/get_packages/";
-        if (packageName) {
-          endpoint += `?name=${packageName}`;
-        } else {
-          endpoint += `?allpackages=true`;
-        }
+        endpoint += packageName ? `?name=${packageName}` : "?allpackages=true";
+
         const response = await axios.get(endpoint);
         setPackages(response.data.packages);
       } catch (error) {
@@ -42,23 +45,29 @@ const PackagesPage = () => {
       }
     };
 
-    fetchPackages();
+    const fetchWishlist = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/api/get_wishlist/?username=${decodedUsername}`
+        );
+        console.log("Wishlist API Response:", response.data);
 
-    axios
-      .get(`http://localhost:8000/api/get_wishlist/?username=${username}`)
-      .then((response) => {
-        if (response.data.packages) {
-          setWishlist(response.data.packages);
+        if (response.data && response.data.length > 0) {
+          setWishlist(response.data);
         } else {
-          setError("No packages found.");
+          console.log("Wishlist is empty.");
         }
-      })
-      .catch((error) => {
+      } catch (error) {
         setError(
           "Error fetching wishlist: " +
             (error.response ? error.response.data.error : error.message)
         );
-      });
+      }
+    };
+
+    fetchPackages();
+    fetchWishlist();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.search]);
 
@@ -69,9 +78,6 @@ const PackagesPage = () => {
   const filteredPackages = packages.filter((pkg) =>
     pkg.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
-
-  const cleanedString = username.replace(/^b'|'+$/g, "");
-  const decodedUsername = atob(cleanedString);
 
   const handleAddToWishlist = async (pkgId) => {
     if (username === "Z3Vlc3Q=") {
@@ -85,11 +91,16 @@ const PackagesPage = () => {
             pkgId: pkgId,
           }
         );
-        console.log(response.data.message);
+        console.log("Wishlist Updated:", response.data);
+
+        // ✅ Update wishlist state dynamically
+        setWishlist((prevWishlist) => [
+          ...prevWishlist,
+          { _id: pkgId, title: packages.find((pkg) => pkg._id === pkgId)?.title },
+        ]);
       } catch (error) {
-        console.error("Wishlist error: An error occurred", error);
+        console.error("Wishlist error:", error);
       }
-      window.location.reload();
     }
   };
 
@@ -107,12 +118,7 @@ const PackagesPage = () => {
     navigate(`/packagedetails/${username}/${pkgId}`);
   };
 
-  if (loading)
-    return (
-      <>
-        <div className={styles.loader}>Loading...</div>
-      </>
-    );
+  if (loading) return <div className={styles.loader}>Loading...</div>;
   if (error) return <p>Error: {error}</p>;
 
   return (
@@ -162,7 +168,7 @@ const PackagesPage = () => {
                   className={`${styles.addToWishlistBtn} ${styles.savedBtn}`}
                   onClick={() => handleAddToWishlist(pkg._id)}
                 >
-                  {wishlist.some((item) => item.title === pkg.title) ? (
+                  {wishlist.some((item) => item._id === pkg._id) ? (
                     <span>Saved</span>
                   ) : (
                     <>Save for later</>

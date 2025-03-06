@@ -46,14 +46,14 @@ const ContactUs = () => {
     e.preventDefault();
 
     // Check if the username param exists and is not corrupted
-    // let decodedUsername = "";
-    // try {
-    //   const cleanedString = username.replace(/^b'|'+$/g, "");
-    //   decodedUsername = atob(cleanedString);
-    // } catch (error) {
-    //   setStatus("Error decoding username.");
-    //   return;
-    // }
+    let decodedUsername = "";
+    try {
+      const cleanedString = username.replace(/^b'|'+$/g, "");
+      decodedUsername = atob(cleanedString);
+    } catch (error) {
+      setStatus("Error decoding username.");
+      return;
+    }
 
     try {
       const response = await axios.post(

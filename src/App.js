@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
-import Home from "./components/Home";
+import Home from "./components/Home"; // Correct import
 import Register from "./components/Register";
 import Login from "./components/Login";
 import AboutUs from "./components/AboutUs";

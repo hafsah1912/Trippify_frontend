@@ -165,7 +165,8 @@
 
 /* Add to Cart Button */
 .addToCartBtn {
-  background-color: yellow; /* Light teal color */
+  background-color: #28a745;
+  
   color: white;
 }
 

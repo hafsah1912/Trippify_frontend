@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import atob from "atob"; // Base64 decoding
 import styles from "../styles/Booking.module.css";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 
 const Booking = () => {
-  const { username, packageId } = useParams();
+  const { username: encodedUsername, packageId } = useParams();
+  const username = atob(encodedUsername); // Decode Base64 username
   const location = useLocation();
   const navigate = useNavigate();
   const pkg = location.state?.package;
@@ -52,12 +54,13 @@ const Booking = () => {
     try {
       const response = await axios.post(
         "http://localhost:8000/api/book_package/",
-        { username, packageId, familyMembers }
+        { username, packageId, familyMembers },
+        { headers: { "Content-Type": "application/json" } }
       );
 
       setSuccess(`Booking successful! Date: ${response.data.date}`);
       alert("You have successfully booked your tour!");
-      navigate(`/mybookings/${username}/${packageId}`);
+      navigate(`/mybookings/${encodedUsername}/${packageId}`);
     } catch (error) {
       setError(error.response?.data?.error || "Error booking package.");
     }
@@ -66,56 +69,58 @@ const Booking = () => {
   if (!pkg) return <div>Loading...</div>;
 
   return (
-    <div className={styles.bookingWrapper}>
+    <div className={styles.pageContainer}>
       <Navbar />
-      <p className={styles.dateP}>Date: {new Date().toLocaleDateString()}</p>
-      <div className={styles.bookingForm}>
-        <h2>{pkg.title}</h2>
-        <div className={styles.packageDetailsDiv}>
-          <p>{pkg.duration.days} D / {pkg.duration.nights} N</p>
-          <p>Price (Adult): &#x20B9; {pkg.price.adult}</p>
-          <p>Price (Child): &#x20B9; {pkg.price.child}</p>
-        </div>
+      <div className={styles.contentWrapper}>
+        <p className={styles.dateP}>Date: {new Date().toLocaleDateString()}</p>
+        <div className={styles.bookingForm}>
+          <h2>{pkg.title}</h2>
+          <div className={styles.packageDetailsDiv}>
+            <p>{pkg.duration.days} D / {pkg.duration.nights} N</p>
+            <p>Price (Adult): &#x20B9; {pkg.price.adult}</p>
+            <p>Price (Child): &#x20B9; {pkg.price.child}</p>
+          </div>
 
-        <div className={styles.familySection}>
-          <h3>Family Members</h3>
-          <input type="number" value={familyCount} onChange={handleFamilyCountChange} min="0" />
-          {familyMembers.map((member, index) => (
-            <div key={index} className={styles.memberDetails}>
-              <p>Member {index + 1}:</p>
-              <input
-                type="text"
-                value={member.name}
-                placeholder="Name"
-                onChange={(e) => handleFamilyMemberChange(index, "name", e.target.value)}
-              />
-              <input
-                type="number"
-                value={member.age}
-                placeholder="Age"
-                onChange={(e) => handleFamilyMemberChange(index, "age", e.target.value)}
-                min="0"
-              />
-            </div>
-          ))}
-        </div>
+          <div className={styles.familySection}>
+            <h3>Family Members</h3>
+            <input type="number" value={familyCount} onChange={handleFamilyCountChange} min="0" />
+            {familyMembers.map((member, index) => (
+              <div key={index} className={styles.memberDetails}>
+                <p>Member {index + 1}:</p>
+                <input
+                  type="text"
+                  value={member.name}
+                  placeholder="Name"
+                  onChange={(e) => handleFamilyMemberChange(index, "name", e.target.value)}
+                />
+                <input
+                  type="number"
+                  value={member.age}
+                  placeholder="Age"
+                  onChange={(e) => handleFamilyMemberChange(index, "age", e.target.value)}
+                  min="0"
+                />
+              </div>
+            ))}
+          </div>
 
-        <div className={styles.billDiv}>
-          <h3>Bill Details</h3>
-          <p>Adults: &#x20B9; {totalPrice.adult}</p>
-          <p>Children: &#x20B9; {totalPrice.child}</p>
-          <p>Total: &#x20B9; {totalPrice.adult + totalPrice.child}</p>
-        </div>
+          <div className={styles.billDiv}>
+            <h3>Bill Details</h3>
+            <p>Adults: &#x20B9; {totalPrice.adult}</p>
+            <p>Children: &#x20B9; {totalPrice.child}</p>
+            <p>Total: &#x20B9; {totalPrice.adult + totalPrice.child}</p>
+          </div>
 
-        <div className={styles.bookBtnDiv}>
-          <button className={styles.cancelBtn}>
-            <Link className={styles.cancelBtnLink} to={`/packages/${username}`}>Cancel</Link>
-          </button>
-          <button className={styles.bookBtn} onClick={handleBooking}>Book Now!</button>
-        </div>
+          <div className={styles.bookBtnDiv}>
+            <button className={styles.cancelBtn}>
+              <Link className={styles.cancelBtnLink} to={`/packages/${encodedUsername}`}>Cancel</Link>
+            </button>
+            <button className={styles.bookBtn} onClick={handleBooking}>Book Now!</button>
+          </div>
 
-        {error && <p className={styles.errorMessage}>{error}</p>}
-        {success && <p className={styles.successMessage}>{success}</p>}
+          {error && <p className={styles.errorMessage}>{error}</p>}
+          {success && <p className={styles.successMessage}>{success}</p>}
+        </div>
       </div>
       <Footer />
     </div>

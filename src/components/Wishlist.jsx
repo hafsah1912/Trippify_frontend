@@ -1,153 +1,102 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link, useParams, useNavigate, useLocation } from "react-router-dom"; // useNavigate instead of useHistory
+import { Link, useParams, useNavigate, useLocation } from "react-router-dom";
 import styles from "../styles/Wishlist.module.css";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import { Helmet } from "react-helmet-async";
+
+// Decode function
+const decodeBase64 = (str) => {
+  try {
+    return atob(str); // Decode Base64
+  } catch (e) {
+    return str; // If decoding fails, return original value
+  }
+};
 
 const Wishlist = () => {
   const [wishlist, setWishlist] = useState([]);
   const [error, setError] = useState(null);
   const { username } = useParams();
-  const cleanedString = username.replace(/^b'|'+$/g, "");
-  const navigate = useNavigate(); // Corrected navigation hook
-  const location = useLocation();
-  const headerImage = location.state?.headerImage || "";
+  
+  const cleanedUsername = decodeBase64(decodeURIComponent(username)).trim(); // Double decode
 
-  // Save scroll position before reload
-  const saveScrollPosition = () => {
-    sessionStorage.setItem("scrollPosition", window.scrollY);
-  };
+  console.log("Decoded Username:", cleanedUsername); // Debugging
 
-  // Restore scroll position after reload
-  const restoreScrollPosition = () => {
-    const scrollPosition = sessionStorage.getItem("scrollPosition");
-    if (scrollPosition) {
-      window.scrollTo(0, parseInt(scrollPosition, 10));
-      sessionStorage.removeItem("scrollPosition");
-    }
-  };
+  const navigate = useNavigate();
 
   useEffect(() => {
-    restoreScrollPosition();
+    if (!cleanedUsername) {
+      setError("Invalid username. Please log in again.");
+      return;
+    }
 
-    axios
-      .get(
-        `http://localhost:8000/api/get_wishlist/?username=${username}`
-      )
-      .then((response) => {
-        if (response.data.packages) {
+    const fetchWishlist = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8000/api/get_wishlist/?username=${cleanedUsername}`);
+        
+        console.log("Wishlist API Response:", response.data); // Debugging
+
+        if (response.data.packages && response.data.packages.length > 0) {
           setWishlist(response.data.packages);
         } else {
-          setError("No packages found.");
+          setError("No packages found in your wishlist.");
         }
-      })
-      .catch((error) => {
+      } catch (error) {
         setError(
           "Error fetching wishlist: " +
             (error.response ? error.response.data.error : error.message)
         );
-      });
-
-    // Save scroll position before navigating away
-    window.addEventListener("beforeunload", saveScrollPosition);
-
-    return () => {
-      window.removeEventListener("beforeunload", saveScrollPosition);
+      }
     };
-  }, [username]);
 
-  const handleBookNow = (pkg) => {
-    navigate(`/booking/${username}/${pkg._id}`, { state: { package: pkg, headerImage } }); // Corrected navigation
-  };
-
-  const handleViewPackage = (pkgId, headerImage) => {
-    navigate(`/packagedetails/${username}/${pkgId}`, { state: { headerImage: `${headerImage}` } }); // Corrected navigation
-  };
-
-  if (error) {
-    return <div>{error}</div>;
-  }
-
-  if (!wishlist.length) {
-    return (
-      <div className={styles.mainDiv}>
-        <Helmet>
-          <title>Your Dream List: Saved InDiameter Tours</title>
-        </Helmet>
-        <div className={`${styles.navbardiv}`}>
-          <Navbar />
-        </div>
-        <h2 className={`${styles.wishlistHeading} `}>Your Wishlist</h2>
-        <div className={styles.emptyWishlistImgDiv}>
-          <div>
-            <p>Your Wishlist is Empty!</p>
-            <Link
-              className={`nav-link ${styles.viewPackagesLink}`}
-              to={`/packages/${username}`}
-            >
-              View Packages
-            </Link>
-          </div>
-        </div>
-
-        <div>
-          <Footer />
-        </div>
-      </div>
-    );
-  }
+    fetchWishlist();
+  }, [cleanedUsername]);
 
   return (
     <div className={styles.mainDiv}>
-      <div className={`${styles.navbardiv}`}>
-        <Navbar colorUpdated="black" />
+      <Navbar />
+      <div className={styles.contentWrapper}>
+        <h2 className={styles.wishlistHeading}>Your Wishlist</h2>
+        
+        {error ? (
+          <p className={styles.errorMessage}>{error}</p>
+        ) : wishlist.length === 0 ? (
+          <div className={styles.emptyWishlistImgDiv}>
+            <p>Your Wishlist is Empty!</p>
+            <Link className={styles.viewPackagesLink} to={`/packages/${cleanedUsername}`}>
+              View Packages
+            </Link>
+          </div>
+        ) : (
+          <div className={styles.wishlistDataContainer}>
+            <table className={styles.wishlistTable}>
+              <thead>
+                <tr>
+                  <th>Package Name</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {wishlist.map((pkg) => (
+                  <tr key={pkg._id}>
+                    <td>{pkg.title}</td>
+                    <td className={styles.actionDiv}>
+                      <button 
+                        className={styles.bookNowBtn} 
+                        onClick={() => navigate(`/booking/${cleanedUsername}/${pkg._id}`)}
+                      >
+                        Book Now
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
-      <h2 className={`${styles.wishlistHeading} `}>Your Wishlist</h2>
-      <div className={`${styles.wishlistDataContainer}`}>
-        <div className={styles.wishlistItems}>
-          {wishlist.map((pkg) => (
-            <div key={pkg._id} className={styles.packageCard}>
-              <div className={`${styles.packagImageContainer}`}>
-                <img
-                  src={`/static/image/package_images/${pkg.package_image}`}
-                  alt={`/static/image/package_images/${pkg.package_image}`}
-                  className={styles.packageImage}
-                />
-              </div>
-              <div className={`${styles.packagDetailsContainer}`}>
-                <div className={`${styles.packageHeadingDiv}`}>
-                  <h3 className={``}>{pkg.title}</h3>
-                </div>
-                <p>
-                  {pkg.tour_highlights}{" "}
-                  <a
-                    className={styles.viewPackageLink}
-                    onClick={() => handleViewPackage(pkg._id, headerImage)}
-                  >
-                    View Package
-                  </a>
-                </p>
-
-                <div className={`${styles.actionDiv}`}>
-                  <div>
-                    <button
-                      className={styles.addToCartBtn}
-                      onClick={() => handleBookNow(pkg)}
-                    >
-                      Book Now
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-      <div>
-        <Footer />
-      </div>
+      <Footer />
     </div>
   );
 };
